@@ -91,6 +91,9 @@ database_id = "placeholder-will-be-updated"
 [[r2_buckets]]
 binding = "BUCKET"
 bucket_name = "PROJECT_NAME-bucket"
+
+[ai]
+binding = "AI"
 ```
 
 Replace `PROJECT_NAME` with the actual project name. The `database_id` placeholder will be replaced in Step 4 after creating the real D1 database.
@@ -276,20 +279,24 @@ PROJECT_DESCRIPTION_FROM_STEP_2
 - `npm run dev` — Start the local development server (runs `wrangler dev`)
 - `npm run deploy` — Deploy to production on Cloudflare Workers
 
+## Planning
+
+For any non-trivial feature, write a plan to `docs/plans/` before writing code. Do not implement until the user reviews and approves the plan. This is the most important workflow habit — it prevents building the wrong thing.
+
 ## Project Memory
 
-Document all plans, architectural decisions, and session summaries in `docs/`. Use `docs/plans/` for feature plans and `docs/log/` for session notes and decisions.
-
-At the start of each session and after context compaction, check recent entries in `docs/log/` and `docs/plans/` to restore context about in-progress work.
+Save session summaries, decisions, and progress to `docs/log/`. At the start of each session and after context compaction, check recent entries in `docs/log/` and `docs/plans/` to restore context about in-progress work.
 
 ## Conventions
 
+- Write a plan before building anything non-trivial — always
 - Use DaisyUI component classes for all UI elements (buttons, cards, forms, navigation, modals)
 - Use HTMX for server interactions (form submissions, dynamic content loading, partial page updates)
 - Use Alpine.js for client-side state (toggles, dropdowns, counters, visibility)
 - Use Hono for all routing and API endpoints
 - Keep all styles in HTML via Tailwind/DaisyUI classes — no separate CSS files
 - All CDN dependencies are loaded in `src/layout.ts` — no build step or bundler needed
+- When building something similar to an existing feature, reference it: "make it work like X"
 ```
 
 Replace `PROJECT_TITLE` and `PROJECT_DESCRIPTION_FROM_STEP_2` with the actual values.
@@ -389,3 +396,5 @@ Remind the user of the build loop:
 Then suggest a next step:
 
 > Start by describing a feature you want to add. Be specific — "add a form where users can submit their name and email" works better than "add a form."
+>
+> Claude will write a plan first and ask you to review it before building anything. This is by design — reviewing a plan takes seconds, undoing a wrong assumption takes much longer.
