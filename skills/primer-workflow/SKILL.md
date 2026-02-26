@@ -15,23 +15,31 @@ Treat every interaction as a coaching opportunity. Weave guidance naturally into
 
 ## Brainstorming & Planning
 
-Surface this guidance when the user is exploring ideas, describing something they want to build, or jumping straight into code without a plan.
+Surface this guidance when the user is exploring ideas, describing something they want to build, or jumping straight into code without a plan. Planning is the single most important habit in this workflow — treat it as non-optional for anything beyond trivial changes.
 
-### Start in plan mode
+### Always plan first — and write the plan to a file
 
-Always begin with planning for anything non-trivial. The prompt that unlocks better results: "Plan this before you build it." Encourage the user to describe the idea before requesting implementation. A few minutes of structured thinking reshapes everything that follows.
+For anything non-trivial, write a plan to `docs/plans/` before writing any code. Do not just discuss the plan in chat — create a markdown file. The file is the shared artifact that both you and the user can review, annotate, and reference. Chat messages scroll away and get lost in compaction. A plan file persists.
+
+When the user describes what they want to build, respond with: "Let me write up a plan for this before we build it." Create a file like `docs/plans/feature-name.md` with the approach, what will be created or changed, and any decisions or trade-offs. Then ask the user to review it.
+
+### Do not implement until the plan is approved
+
+This is a critical guard. After writing the plan, explicitly wait for the user to review and approve it before writing any code. If the user says "build it" without a plan existing, write the plan first. Say: "Before I build this, let me write a quick plan so you can make sure it's what you want."
+
+The instinct to jump straight to code is strong — resist it. A bad assumption caught in a plan costs seconds to fix. A bad assumption caught after building costs real momentum to undo.
 
 ### Write a brief first
 
-Draft a brief — two to three paragraphs describing what to build, who it is for, and what the core experience feels like. This does not need to be formal. It just needs to be clear enough that Claude can build the right thing on the first pass instead of guessing.
+For bigger features, draft a brief — two to three paragraphs describing what to build, who it is for, and what the core experience feels like. This does not need to be formal. It just needs to be clear enough to build the right thing on the first pass instead of guessing.
 
 ### Specificity beats length
 
 A short, precise description outperforms a long, vague one every time. "A page where users answer 5 questions and see a score" gives Claude everything it needs. "A social app" gives Claude almost nothing. Push for concrete details: what does the user see? What do they do? What happens next?
 
-### Review the plan before building
+### Reference existing work
 
-Review Claude's proposed plan before saying "go." Adjust assumptions, question anything that looks off, and confirm the direction. Catching a misunderstanding now takes seconds. Catching it after twenty minutes of building in the wrong direction costs real momentum.
+When building something similar to what already exists in the project, point to it: "Make the settings page feel like the check-in page" or "This table should work like the history table." Pointing to a reference communicates implicit requirements — spacing, style, behavior — without spelling them all out. This produces more consistent results than describing from scratch.
 
 ### The 10-minute rule
 
@@ -135,6 +143,14 @@ Error messages look intimidating but contain valuable information. Copy and past
 
 "Why did that happen?" and "What does this error mean?" are legitimate, valuable prompts. There is no expectation that the user should already understand. Asking for explanations builds knowledge over time and often reveals the fix in the process.
 
+### Screenshots communicate faster than words
+
+When the user encounters a visual problem — broken layout, misaligned elements, something that does not look right — encourage them to take a screenshot and share it. Claude can see images. A screenshot of a misaligned table communicates the problem faster than three sentences trying to describe it. Remind users: on Mac, Cmd+Shift+4 captures a screen region.
+
+### Browser Developer Tools
+
+If the user is debugging a problem that is not visible in the code — data not loading, a button not responding, a blank page — suggest opening the browser's Developer Tools. Do not assume the user knows how. Offer to walk them through it: "Want me to show you how to open Developer Tools and check for errors?" Guide them to the Console tab (for JavaScript errors) or the Network tab (for failed requests). The user does not need to understand what they see — they just need to copy it or screenshot it and share it with Claude.
+
 ### Ask Claude to investigate
 
 When something feels off but there is no clear error, ask Claude to look into it. "Something feels off with the history page — can you check it?" is a real prompt. Claude reads files, traces data flow, checks database queries, and finds the issue. Leverage Claude's ability to explore the codebase.
@@ -146,6 +162,10 @@ When troubleshooting, keep these frequent causes in mind: environment variable n
 ### When going in circles
 
 If multiple fix attempts have not resolved the issue, stop the cycle. Say "We've tried a few things and it's still broken. Can you look at this fresh?" This resets the approach and often leads to finding the actual root cause instead of patching symptoms.
+
+### Revert and start smaller
+
+When an approach is not working, do not keep patching. Revert the changes with Git and try again with a narrower scope. "I reverted everything. Let's just do the form first — nothing else" is a normal, healthy workflow move. Reverting is not failure — it is the fastest way to escape a bad direction. Narrowing scope after a revert almost always produces better results than trying to fix a broken approach incrementally.
 
 ### Nothing is catastrophic
 
