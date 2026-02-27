@@ -98,7 +98,7 @@ Work through missing tools one at a time. Skip anything already present and work
 - **Git** — "Version control. It tracks every change to your code so nothing is ever lost and you can always undo mistakes."
 - **Wrangler** — "The Cloudflare command-line tool. It deploys your projects to the internet."
 
-**Git configuration:** After confirming Git is installed, check whether `user.name` and `user.email` are configured globally. If either is missing, ask the user for their name and email address, then configure Git with `git config --global`. Explain that Git needs these to label each change with who made it. Use the email associated with their GitHub account if they have one — this ensures proper attribution on any code they share later.
+**Git configuration:** After confirming Git is installed, check whether `user.name` and `user.email` are configured globally. If either is missing, ask the user for their name and email address, then configure Git with `git config --global`. Explain: "Git labels every change with your name and email — think of it as signing your work. No account is needed for this. If you have or plan to create a GitHub account, use the same email here — it links your work to your profile. Not sure? Use whatever email you like. This is easy to change later with one command."
 
 If any installation fails, consult `references/troubleshooting.md` for the specific error symptom before attempting alternative approaches.
 

@@ -349,7 +349,15 @@ git add -A
 git commit -m "Initial scaffold from AI Primer starter template"
 ```
 
-### Create GitHub repository
+Your project is now tracked by Git locally. Every change from here on can be saved and undone.
+
+### Create GitHub repository (optional)
+
+GitHub backs up your project to the cloud and makes it easy to share. If the user does not have a GitHub account or is not sure, skip this step — everything works without it. They can set up GitHub later whenever they are ready.
+
+Ask: "Do you have a GitHub account? If not, no problem — we'll skip this step and you can set it up later."
+
+**If yes:**
 
 ```bash
 gh repo create PROJECT_NAME --private --source=. --push
@@ -369,6 +377,8 @@ If SSH keys or GitHub authentication are not configured, walk through the setup:
 1. Run `gh auth login`.
 2. Select GitHub.com, SSH protocol, and follow the interactive prompts.
 3. Retry the `gh repo create` command after authentication succeeds.
+
+**If no or unsure:** Skip to Step 6. Mention: "When you want to back up your project to the cloud, just say 'help me set up GitHub' and I'll walk you through it."
 
 ---
 
