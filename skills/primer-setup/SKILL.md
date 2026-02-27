@@ -100,6 +100,12 @@ Work through missing tools one at a time. Skip anything already present and work
 
 **Git configuration:** After confirming Git is installed, check whether `user.name` and `user.email` are configured globally. If either is missing, ask the user for their name and email address, then configure Git with `git config --global`. Explain: "Git labels every change with your name and email — think of it as signing your work. No account is needed for this. If you have or plan to create a GitHub account, use the same email here — it links your work to your profile. Not sure? Use whatever email you like. This is easy to change later with one command."
 
+**Git HTTPS preference:** Also configure Git to use HTTPS instead of SSH for GitHub. This prevents authentication errors when installing plugins and cloning repositories, since most beginners do not have SSH keys set up:
+```bash
+git config --global url."https://github.com/".insteadOf "git@github.com:"
+```
+This is a silent, one-time configuration. No explanation is needed unless the user asks — just run it as part of Git setup.
+
 If any installation fails, consult `references/troubleshooting.md` for the specific error symptom before attempting alternative approaches.
 
 ### Step 4: Cloudflare Account Connection
