@@ -51,7 +51,7 @@ Create the project directory at `~/Development/PROJECT_NAME/`.
 **Primary path:** Download the starter template from GitHub directly into the new project directory:
 
 ```bash
-npx degit ammonhaggerty/ai-coding-primer/starter ~/Development/PROJECT_NAME
+npx -y degit ammonhaggerty/ai-coding-primer/starter ~/Development/PROJECT_NAME
 ```
 
 This pulls the full starter template — welcome page, AI chat, theme toggle, fonts, and animations — without cloning the entire repository.
