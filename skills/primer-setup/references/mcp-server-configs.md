@@ -35,7 +35,7 @@ This registers context7 as a user-scoped MCP server in `~/.claude.json`, which p
 
 **Install command (user types this directly in Claude Code):**
 ```
-/plugin marketplace add anthropic/cloudflare
+/plugin install cloudflare@claude-plugins-official
 ```
 When prompted for scope, choose "Install for you (user scope)".
 
@@ -66,7 +66,7 @@ The `wrangler login` command opens a browser for Cloudflare OAuth authentication
 
 **Install command (user types this directly in Claude Code):**
 ```
-/plugin marketplace add anthropic/playwright
+/plugin install playwright@claude-plugins-official
 ```
 When prompted for scope, choose "Install for you (user scope)".
 
@@ -124,7 +124,7 @@ claude mcp add --transport http --scope user --header "Authorization: Bearer FIG
 
 **Install command (user types this directly in Claude Code):**
 ```
-/plugin marketplace add anthropic/frontend-design
+/plugin install frontend-design@claude-plugins-official
 ```
 When prompted for scope, choose "Install for you (user scope)".
 
@@ -138,7 +138,7 @@ When prompted for scope, choose "Install for you (user scope)".
 
 ## Configuration Notes
 
-**MCP servers vs. plugins:** MCP servers (context7, Figma) are installed using `claude mcp add` which writes to `~/.claude.json`. Plugins (Cloudflare, Playwright, frontend-design) are installed from within Claude Code using `/plugin marketplace add` which registers them in settings files.
+**MCP servers vs. plugins:** MCP servers (context7, Figma) are installed using `claude mcp add` which writes to `~/.claude.json`. Plugins (Cloudflare, Playwright, frontend-design) are installed from the official marketplace using `/plugin install <name>@claude-plugins-official` which registers them in settings files. The official marketplace is pre-configured — no need to add it.
 
 **Scope options for MCP servers:**
 - `--scope user` — Available in all projects for this user (recommended for primer setup)

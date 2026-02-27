@@ -144,7 +144,7 @@ Verify with `claude mcp list` to confirm context7 appears.
 
 ### Step 6: Marketplace Plugin Installation
 
-Marketplace plugins require the user to type slash commands directly — they cannot be installed via bash because they have interactive prompts (scope selection, trust confirmation).
+The official Anthropic plugin marketplace (`claude-plugins-official`) is already pre-configured in Claude Code. Plugins are installed from it using `/plugin install` commands. These require the user to type them directly — they cannot be run via bash because they have interactive prompts (scope selection, trust confirmation).
 
 Tell the user: "I need you to type a few commands to install plugins. These are slash commands — type them exactly as shown, starting with the `/`. For each one, when it asks about install scope, choose 'Install for you (user scope)'."
 
@@ -152,19 +152,19 @@ Ask the user to type each of the following, one at a time. Wait for each to comp
 
 1. **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly."
    ```
-   /plugin marketplace add anthropic/cloudflare
+   /plugin install cloudflare@claude-plugins-official
    ```
    When it asks for scope, choose "Install for you (user scope)".
 
 2. **Playwright** — "This lets me open a browser, test your app, and debug issues autonomously — when something looks wrong, I can see what you see."
    ```
-   /plugin marketplace add anthropic/playwright
+   /plugin install playwright@claude-plugins-official
    ```
    Choose "Install for you (user scope)".
 
 3. **frontend-design** — "This teaches me UI/UX patterns and helps me build better-looking interfaces."
    ```
-   /plugin marketplace add anthropic/frontend-design
+   /plugin install frontend-design@claude-plugins-official
    ```
    Choose "Install for you (user scope)".
 
