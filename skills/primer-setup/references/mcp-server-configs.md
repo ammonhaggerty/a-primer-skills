@@ -33,15 +33,13 @@ This registers context7 as a user-scoped MCP server in `~/.claude.json`, which p
 
 **Type:** Marketplace plugin
 
-**Install command (from within Claude Code):**
+**Install command (user types this directly in Claude Code):**
 ```
 /plugin marketplace add anthropic/cloudflare
 ```
+When prompted for scope, choose "Install for you (user scope)".
 
-When running inside an existing Claude Code session (e.g., during primer-setup), use the nested session workaround:
-```bash
-unset CLAUDECODE && claude /plugin marketplace add anthropic/cloudflare
-```
+**Important:** This is a slash command the user must type directly. It cannot be run via bash because it has interactive prompts (scope selection, trust confirmation).
 
 **What it enables:** Direct interaction with Cloudflare services. Claude can search Cloudflare documentation and help manage Workers, D1 databases, KV namespaces, R2 buckets, and other Cloudflare resources.
 
@@ -66,15 +64,13 @@ The `wrangler login` command opens a browser for Cloudflare OAuth authentication
 
 **Type:** Marketplace plugin
 
-**Install command (from within Claude Code):**
+**Install command (user types this directly in Claude Code):**
 ```
 /plugin marketplace add anthropic/playwright
 ```
+When prompted for scope, choose "Install for you (user scope)".
 
-When running inside an existing Claude Code session, use the nested session workaround:
-```bash
-unset CLAUDECODE && claude /plugin marketplace add anthropic/playwright
-```
+**Important:** This is a slash command the user must type directly. It cannot be run via bash.
 
 **What it enables:** Browser automation. Claude can navigate to URLs, take screenshots, click elements, fill forms, and inspect pages. Useful for testing web apps, debugging UI issues, and visual verification.
 
@@ -126,15 +122,13 @@ claude mcp add --transport http --scope user --header "Authorization: Bearer FIG
 
 **Type:** Marketplace plugin
 
-**Install command (from within Claude Code):**
+**Install command (user types this directly in Claude Code):**
 ```
 /plugin marketplace add anthropic/frontend-design
 ```
+When prompted for scope, choose "Install for you (user scope)".
 
-When running inside an existing Claude Code session, use the nested session workaround:
-```bash
-unset CLAUDECODE && claude /plugin marketplace add anthropic/frontend-design
-```
+**Important:** This is a slash command the user must type directly. It cannot be run via bash.
 
 **What it enables:** UI/UX patterns and best practices. Teaches Claude to build better-looking interfaces with stronger design sensibility.
 

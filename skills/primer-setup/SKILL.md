@@ -108,45 +108,61 @@ Run `wrangler whoami` to check existing authentication.
 
 **If already authenticated:** Confirm the account name and skip ahead. "You are already connected to Cloudflare as [account name]."
 
-**If not authenticated:** Explain that this step requires the user to act — Claude cannot log in for them. Then run `wrangler login`, which opens a browser window for Cloudflare OAuth. Walk through what will happen:
+**If not authenticated:** Ask the user whether they want to connect now or skip for later:
 
-"A browser window will open. Sign in to your Cloudflare account — or create a free account if you do not have one yet. Authorize the connection when prompted. Then come back here and let me know when it is done."
+"Cloudflare is where your app will live on the internet. You can connect now or skip this and do it later when you're ready to deploy. Everything works locally without it. Would you like to connect now or skip for now?"
 
-After the user confirms the OAuth flow is complete, verify with `wrangler whoami`. If verification fails, consult `references/troubleshooting.md` for authentication issues.
+**If the user wants to skip:** Move on to Step 5. Note: "No problem. When you're ready to connect, just say 'connect to Cloudflare' and I'll walk you through it."
 
-### Step 5: MCP Server & Plugin Configuration
+**If the user wants to connect now:** Explain that this requires the user to act — Claude cannot log in for them. Important: If the user does not already have a Cloudflare account, tell them to create one first at dash.cloudflare.com/sign-up BEFORE running `wrangler login`. The `wrangler login` command has a 2-minute timeout, which is not enough time to create an account and complete the OAuth flow.
 
-Consult `references/mcp-server-configs.md` for exact configurations and install commands. Install and configure the following in order.
+Walk through what will happen:
 
-**MCP servers** are installed using `claude mcp add` CLI commands run in the terminal. These commands write to `~/.claude.json` and persist across all sessions automatically.
+"I'll run `wrangler login`. A browser window will open — sign in to your Cloudflare account and click 'Allow' to authorize the connection. Then come back here and let me know when it's done. Note: This has a 2-minute timeout, so complete the browser steps quickly."
 
-**Marketplace plugins** are installed using `claude /plugin marketplace add` commands. When running inside an existing Claude Code session, the command will fail with a "nested session" error. Work around this by unsetting the CLAUDECODE environment variable first: `unset CLAUDECODE && claude /plugin marketplace add <plugin-name>`.
+Run `wrangler login` with a 3-minute timeout. After the user confirms the OAuth flow is complete, verify with `wrangler whoami`. If the login timed out, offer to try again. If verification fails, consult `references/troubleshooting.md` for authentication issues.
 
-**Required — install all four:**
+### Step 5: MCP Server Configuration
 
-- **context7** — "This lets me pull the latest documentation for any library instead of relying on potentially outdated training data." Install as an MCP server using the CLI command from the reference file: `claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp@latest`
+Install MCP servers using `claude mcp add` CLI commands. These write to `~/.claude.json` and persist across all sessions automatically. Consult `references/mcp-server-configs.md` for exact commands.
 
-- **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly." Install as a marketplace plugin. Requires Wrangler to be authenticated (completed in Step 4). Use: `unset CLAUDECODE && claude /plugin marketplace add anthropic/cloudflare`
+**Required:**
 
-- **Playwright** — "This lets me open a browser, test your app, and debug issues autonomously — when something looks wrong, I can see what you see." Install as a marketplace plugin: `unset CLAUDECODE && claude /plugin marketplace add anthropic/playwright`. After installing, run `npx playwright install` to download the browser binaries. Note that this download may take a few minutes.
-
-- **frontend-design** — "This teaches me UI/UX patterns and helps me build better-looking interfaces." Install as a marketplace plugin: `unset CLAUDECODE && claude /plugin marketplace add anthropic/frontend-design`
+- **context7** — "This lets me pull the latest documentation for any library instead of relying on potentially outdated training data." Run: `claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp@latest`
 
 **Optional:**
 
-- **Figma** — Ask: "Do you use Figma for design? If so, I can connect to your Figma files and generate code from your designs." If yes, install as an MCP server using: `claude mcp add --transport http --scope user figma https://mcp.figma.com/mcp`. After installing, the user will need to authenticate via `/mcp` inside Claude Code. If no, skip.
+- **Figma** — Ask: "Do you use Figma for design? If so, I can connect to your Figma files and generate code from your designs." If yes, run: `claude mcp add --transport http --scope user figma https://mcp.figma.com/mcp`. After installing, the user will need to authenticate via `/mcp` inside Claude Code on next restart. If no, skip.
 
-### Step 6: Verification
+Verify with `claude mcp list` to confirm context7 appears.
 
-Verify that all MCP servers and plugins were installed correctly.
+### Step 6: Marketplace Plugin Installation
 
-**Check MCP servers:**
-```bash
-claude mcp list
-```
-Confirm that `context7` appears in the list (and `figma` if the user chose to install it).
+Marketplace plugins require the user to type slash commands directly — they cannot be installed via bash because they have interactive prompts (scope selection, trust confirmation).
 
-**Check plugins:** After restarting Claude, the Cloudflare, Playwright, and frontend-design plugins should load automatically. If any are missing, re-run the install command from Step 5.
+Tell the user: "I need you to type a few commands to install plugins. These are slash commands — type them exactly as shown, starting with the `/`. For each one, when it asks about install scope, choose 'Install for you (user scope)'."
+
+Ask the user to type each of the following, one at a time. Wait for each to complete before giving the next:
+
+1. **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly."
+   ```
+   /plugin marketplace add anthropic/cloudflare
+   ```
+   When it asks for scope, choose "Install for you (user scope)".
+
+2. **Playwright** — "This lets me open a browser, test your app, and debug issues autonomously — when something looks wrong, I can see what you see."
+   ```
+   /plugin marketplace add anthropic/playwright
+   ```
+   Choose "Install for you (user scope)".
+
+3. **frontend-design** — "This teaches me UI/UX patterns and helps me build better-looking interfaces."
+   ```
+   /plugin marketplace add anthropic/frontend-design
+   ```
+   Choose "Install for you (user scope)".
+
+After all three are installed, run `npx playwright install` to download browser binaries. Note this download may take a few minutes.
 
 Explain the concept behind plugins and skills: "Skills are playbooks that teach me specific workflows. Without them, I am a generalist. With them, I know your preferred workflow and can be more effective at each part of building — from brainstorming to debugging to deployment."
 
