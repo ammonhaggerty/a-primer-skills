@@ -148,7 +148,7 @@ Verify with `claude mcp list` to confirm context7 and cloudflare appear.
 
 Install plugins from the official Anthropic marketplace. The user needs to first add the marketplace, then install plugins from it. These are slash commands the user must type directly — they cannot be run via bash because they have interactive prompts.
 
-Tell the user: "I need you to type a few commands to install plugins. These are slash commands — type them exactly as shown, starting with the `/`. For each one, when it asks about install scope, choose 'Install for you (user scope)'."
+Tell the user: "I need you to type a few commands to install plugins. These are slash commands — type them exactly as shown, starting with the `/`. For each one, when it asks about install scope, choose 'Install for you (user scope)'. After all three are installed, just type 'all done' or 'done' and I'll take it from there."
 
 **First, add the official marketplace:**
 ```
