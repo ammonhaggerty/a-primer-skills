@@ -130,24 +130,29 @@ Consult `references/mcp-server-configs.md` for exact configurations and install 
 
 - **Figma** — Ask: "Do you use Figma for design? If so, I can connect to your Figma files and generate code from your designs." If yes, walk through Figma MCP setup using the instructions in the reference file — this requires the user to generate a personal access token in their Figma account settings. If no, skip.
 
-For each server or plugin: explain what it enables in one sentence, install or configure it, and verify it works. After all MCP servers and plugins are configured, restart the Claude Code session so the new tools become available. Explain that restarting is like refreshing a browser — it picks up the new configuration.
+For each server or plugin: explain what it enables in one sentence, install or configure it, and verify it works.
+
+**Important:** When installing marketplace plugins from inside a Claude Code session, the `claude /plugin marketplace add` command will fail with a "nested session" error. Work around this by unsetting the CLAUDECODE environment variable first: `unset CLAUDECODE && claude /plugin marketplace add <plugin-name>`.
 
 ### Step 6: Plugin & Skill Installation
 
-Install workflow plugins from the marketplace:
+Install workflow plugins from the marketplace using the nested session workaround:
 
-- **superpowers** — "This teaches me structured workflows for brainstorming ideas, debugging problems, planning features, and working with parallel agents."
-- **frontend-design** — "This teaches me UI/UX patterns and helps me build better-looking interfaces."
+- **frontend-design** — `unset CLAUDECODE && claude /plugin marketplace add anthropic/frontend-design`. "This teaches me UI/UX patterns and helps me build better-looking interfaces."
 
 Explain the concept behind plugins and skills: "Skills are playbooks that teach me specific workflows. Without them, I am a generalist. With them, I know your preferred workflow and can be more effective at each part of building — from brainstorming to debugging to deployment."
 
 Verify each plugin installed successfully by checking the plugin list. If a plugin does not appear, consult `references/mcp-server-configs.md` for the correct install command and try again.
 
+Note: The "superpowers" plugin may not be available in the marketplace. If it is not found, skip it — the primer skills already include workflow guidance for brainstorming, debugging, and planning.
+
 ### Step 7: Completion Summary
 
 Present a clear checklist of everything that was set up, using checkmarks for completed items. Include the tool versions where relevant.
 
-Remind the user how to start their first project: "Create your first project by typing `/a-new-project`."
+Tell the user to restart Claude to pick up the new configuration: "To restart, type `/exit` (or press Ctrl+C), then type `claude` to start a fresh session. This is like refreshing a browser — Claude picks up all the new tools and plugins when it starts fresh."
+
+Remind the user how to start their first project: "After restarting, type `/a-new-project` to create your first project."
 
 Suggest optional upgrades that are not required but can improve the experience:
 
