@@ -1,0 +1,16 @@
+{
+  "name": "a-primer",
+  "owner": {
+    "name": "Ammon Haggerty"
+  },
+  "metadata": {
+    "description": "Companion plugin for the AI Primer guidebook — environment setup, project creation, and workflow guidance"
+  },
+  "plugins": [
+    {
+      "name": "a-primer-skills",
+      "source": "./",
+      "description": "Environment setup, project scaffolding, and workflow skills for the AI Primer guidebook"
+    }
+  ]
+}

@@ -118,33 +118,37 @@ After the user confirms the OAuth flow is complete, verify with `wrangler whoami
 
 Consult `references/mcp-server-configs.md` for exact configurations and install commands. Install and configure the following in order.
 
-**Required — install all three:**
+**MCP servers** are installed using `claude mcp add` CLI commands run in the terminal. These commands write to `~/.claude.json` and persist across all sessions automatically.
 
-- **context7** — "This lets me pull the latest documentation for any library instead of relying on potentially outdated training data." Configure as an MCP server in `~/.claude/settings.json` using the exact JSON from the reference file. Merge into the existing `mcpServers` object; do not overwrite other servers.
+**Marketplace plugins** are installed using `claude /plugin marketplace add` commands. When running inside an existing Claude Code session, the command will fail with a "nested session" error. Work around this by unsetting the CLAUDECODE environment variable first: `unset CLAUDECODE && claude /plugin marketplace add <plugin-name>`.
 
-- **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly." Install as a marketplace plugin. Requires Wrangler to be authenticated (completed in Step 4).
+**Required — install all four:**
 
-- **Playwright** — "This lets me open a browser, test your app, and debug issues autonomously — when something looks wrong, I can see what you see." Install as a marketplace plugin. After installing, run `npx playwright install` to download the browser binaries. Note that this download may take a few minutes.
+- **context7** — "This lets me pull the latest documentation for any library instead of relying on potentially outdated training data." Install as an MCP server using the CLI command from the reference file: `claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp@latest`
+
+- **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly." Install as a marketplace plugin. Requires Wrangler to be authenticated (completed in Step 4). Use: `unset CLAUDECODE && claude /plugin marketplace add anthropic/cloudflare`
+
+- **Playwright** — "This lets me open a browser, test your app, and debug issues autonomously — when something looks wrong, I can see what you see." Install as a marketplace plugin: `unset CLAUDECODE && claude /plugin marketplace add anthropic/playwright`. After installing, run `npx playwright install` to download the browser binaries. Note that this download may take a few minutes.
+
+- **frontend-design** — "This teaches me UI/UX patterns and helps me build better-looking interfaces." Install as a marketplace plugin: `unset CLAUDECODE && claude /plugin marketplace add anthropic/frontend-design`
 
 **Optional:**
 
-- **Figma** — Ask: "Do you use Figma for design? If so, I can connect to your Figma files and generate code from your designs." If yes, walk through Figma MCP setup using the instructions in the reference file — this requires the user to generate a personal access token in their Figma account settings. If no, skip.
+- **Figma** — Ask: "Do you use Figma for design? If so, I can connect to your Figma files and generate code from your designs." If yes, install as an MCP server using: `claude mcp add --transport http --scope user figma https://mcp.figma.com/mcp`. After installing, the user will need to authenticate via `/mcp` inside Claude Code. If no, skip.
 
-For each server or plugin: explain what it enables in one sentence, install or configure it, and verify it works.
+### Step 6: Verification
 
-**Important:** When installing marketplace plugins from inside a Claude Code session, the `claude /plugin marketplace add` command will fail with a "nested session" error. Work around this by unsetting the CLAUDECODE environment variable first: `unset CLAUDECODE && claude /plugin marketplace add <plugin-name>`.
+Verify that all MCP servers and plugins were installed correctly.
 
-### Step 6: Plugin & Skill Installation
+**Check MCP servers:**
+```bash
+claude mcp list
+```
+Confirm that `context7` appears in the list (and `figma` if the user chose to install it).
 
-Install workflow plugins from the marketplace using the nested session workaround:
-
-- **frontend-design** — `unset CLAUDECODE && claude /plugin marketplace add anthropic/frontend-design`. "This teaches me UI/UX patterns and helps me build better-looking interfaces."
+**Check plugins:** After restarting Claude, the Cloudflare, Playwright, and frontend-design plugins should load automatically. If any are missing, re-run the install command from Step 5.
 
 Explain the concept behind plugins and skills: "Skills are playbooks that teach me specific workflows. Without them, I am a generalist. With them, I know your preferred workflow and can be more effective at each part of building — from brainstorming to debugging to deployment."
-
-Verify each plugin installed successfully by checking the plugin list. If a plugin does not appear, consult `references/mcp-server-configs.md` for the correct install command and try again.
-
-Note: The "superpowers" plugin may not be available in the marketplace. If it is not found, skip it — the primer skills already include workflow guidance for brainstorming, debugging, and planning.
 
 ### Step 7: Completion Summary
 
