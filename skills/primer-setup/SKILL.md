@@ -132,39 +132,46 @@ Run `wrangler login` with a 3-minute timeout. After the user confirms the OAuth 
 
 Install MCP servers using `claude mcp add` CLI commands. These write to `~/.claude.json` and persist across all sessions automatically. Consult `references/mcp-server-configs.md` for exact commands.
 
-**Required:**
+**Required — install both:**
 
 - **context7** — "This lets me pull the latest documentation for any library instead of relying on potentially outdated training data." Run: `claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp@latest`
+
+- **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly." Run: `claude mcp add --transport http --scope user cloudflare https://mcp.cloudflare.com/mcp`. Authentication happens automatically via OAuth the first time it is used — no separate login needed.
 
 **Optional:**
 
 - **Figma** — Ask: "Do you use Figma for design? If so, I can connect to your Figma files and generate code from your designs." If yes, run: `claude mcp add --transport http --scope user figma https://mcp.figma.com/mcp`. After installing, the user will need to authenticate via `/mcp` inside Claude Code on next restart. If no, skip.
 
-Verify with `claude mcp list` to confirm context7 appears.
+Verify with `claude mcp list` to confirm context7 and cloudflare appear.
 
 ### Step 6: Marketplace Plugin Installation
 
-The official Anthropic plugin marketplace (`claude-plugins-official`) is already pre-configured in Claude Code. Plugins are installed from it using `/plugin install` commands. These require the user to type them directly — they cannot be run via bash because they have interactive prompts (scope selection, trust confirmation).
+Install plugins from the official Anthropic marketplace. The user needs to first add the marketplace, then install plugins from it. These are slash commands the user must type directly — they cannot be run via bash because they have interactive prompts.
 
 Tell the user: "I need you to type a few commands to install plugins. These are slash commands — type them exactly as shown, starting with the `/`. For each one, when it asks about install scope, choose 'Install for you (user scope)'."
 
-Ask the user to type each of the following, one at a time. Wait for each to complete before giving the next:
+**First, add the official marketplace:**
+```
+/plugin marketplace add anthropics/claude-plugins-official
+```
 
-1. **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly."
-   ```
-   /plugin install cloudflare@claude-plugins-official
-   ```
-   When it asks for scope, choose "Install for you (user scope)".
+**Then install each plugin, one at a time:**
 
-2. **Playwright** — "This lets me open a browser, test your app, and debug issues autonomously — when something looks wrong, I can see what you see."
+1. **Playwright** — "This lets me open a browser, test your app, and debug issues autonomously — when something looks wrong, I can see what you see."
    ```
    /plugin install playwright@claude-plugins-official
    ```
    Choose "Install for you (user scope)".
 
-3. **frontend-design** — "This teaches me UI/UX patterns and helps me build better-looking interfaces."
+2. **frontend-design** — "This teaches me UI/UX patterns and helps me build better-looking interfaces."
    ```
    /plugin install frontend-design@claude-plugins-official
+   ```
+   Choose "Install for you (user scope)".
+
+3. **superpowers** — "This gives me enhanced workflow skills — brainstorming, debugging, planning, and more."
+   ```
+   /plugin install superpowers@claude-plugins-official
    ```
    Choose "Install for you (user scope)".
 

@@ -2,7 +2,9 @@
 
 Exact configurations and install commands for each MCP server and plugin used in the primer.
 
-**Important:** MCP servers are installed using `claude mcp add` CLI commands, which persist across sessions. Plugins are installed using `/plugin marketplace add` commands from within Claude Code. Both approaches write to the correct config files automatically.
+**MCP servers** are installed using `claude mcp add` CLI commands run in the terminal. These write to `~/.claude.json` and persist across all sessions automatically.
+
+**Marketplace plugins** are installed using `/plugin install` slash commands typed directly inside Claude Code. The official Anthropic marketplace (`claude-plugins-official`) must be added first, then plugins are installed from it. These commands cannot be run via bash because they have interactive prompts (scope selection, trust confirmation).
 
 ---
 
@@ -12,7 +14,7 @@ Exact configurations and install commands for each MCP server and plugin used in
 
 **What it enables:** Live documentation lookup. Claude can fetch current docs for any library or framework instead of relying on training data. Eliminates outdated API references.
 
-**Install command (run in terminal, outside Claude):**
+**Install command (run in terminal):**
 ```bash
 claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp@latest
 ```
@@ -31,59 +33,22 @@ This registers context7 as a user-scoped MCP server in `~/.claude.json`, which p
 
 ## Cloudflare
 
-**Type:** Marketplace plugin
+**Type:** MCP server (CLI install)
 
-**Install command (user types this directly in Claude Code):**
-```
-/plugin install cloudflare@claude-plugins-official
-```
-When prompted for scope, choose "Install for you (user scope)".
+**What it enables:** Direct interaction with over 2,500 Cloudflare API endpoints. Claude can manage Workers, D1 databases, R2 buckets, DNS, and other Cloudflare services. Authentication happens automatically via OAuth the first time a Cloudflare tool is used — no separate login step required.
 
-**Important:** This is a slash command the user must type directly. It cannot be run via bash because it has interactive prompts (scope selection, trust confirmation).
-
-**What it enables:** Direct interaction with Cloudflare services. Claude can search Cloudflare documentation and help manage Workers, D1 databases, KV namespaces, R2 buckets, and other Cloudflare resources.
-
-**Prerequisites:** Wrangler must be installed and authenticated.
+**Install command (run in terminal):**
 ```bash
-npm install -g wrangler
-wrangler login
+claude mcp add --transport http --scope user cloudflare https://mcp.cloudflare.com/mcp
 ```
 
-The `wrangler login` command opens a browser for Cloudflare OAuth authentication. Complete the flow and return to the terminal.
+**Prerequisites:** None. Wrangler authentication is not required for this MCP server — it uses its own OAuth flow.
 
-**Verification:** After restarting Claude, ask: "Use the Cloudflare tools to list my Workers." Claude should be able to query the Cloudflare account.
+**Verification:** After restarting Claude, ask: "Use the Cloudflare tools to search for Workers documentation." Claude should be able to access Cloudflare's API.
 
 **Common issues:**
-- "Not authenticated" — Run `wrangler login` to re-authenticate.
-- Plugin not working after install — Restart the Claude Code session.
-- Account selection — If multiple Cloudflare accounts exist, may need to set the active account via the Cloudflare MCP tools.
-
----
-
-## Playwright
-
-**Type:** Marketplace plugin
-
-**Install command (user types this directly in Claude Code):**
-```
-/plugin install playwright@claude-plugins-official
-```
-When prompted for scope, choose "Install for you (user scope)".
-
-**Important:** This is a slash command the user must type directly. It cannot be run via bash.
-
-**What it enables:** Browser automation. Claude can navigate to URLs, take screenshots, click elements, fill forms, and inspect pages. Useful for testing web apps, debugging UI issues, and visual verification.
-
-**Post-install:** Download browser binaries (this can take a few minutes):
-```bash
-npx playwright install
-```
-
-**Verification:** After restarting Claude, ask: "Use Playwright to navigate to https://example.com and take a screenshot." Claude should open a browser, navigate, and return a screenshot.
-
-**Common issues:**
-- Browser not installed — Run `npx playwright install` to download browser binaries.
-- Plugin installed but tools not available — Restart the Claude Code session.
+- OAuth prompt not appearing — Restart Claude Code and try again.
+- Account selection — If multiple Cloudflare accounts exist, you may need to re-authorize with the correct account.
 
 ---
 
@@ -93,52 +58,98 @@ npx playwright install
 
 **What it enables:** Design-to-code workflow. Claude can inspect Figma files, read component properties, extract design tokens, and generate code that matches designs.
 
-**Install command (run in terminal, outside Claude):**
+**Install command (run in terminal):**
 ```bash
 claude mcp add --transport http --scope user figma https://mcp.figma.com/mcp
 ```
 
-After installing, authenticate by running `/mcp` inside Claude Code and following the Figma authentication flow. Alternatively, if the user already has a Figma personal access token, they can set it during install:
-```bash
-claude mcp add --transport http --scope user --header "Authorization: Bearer FIGMA_TOKEN" figma https://mcp.figma.com/mcp
-```
-
-**To generate a Figma personal access token (if needed):**
-1. Open Figma and go to account settings.
-2. Scroll to "Personal access tokens."
-3. Generate a new token with appropriate scopes.
-4. Use the token in the install command above.
+After installing, the user will need to authenticate via `/mcp` inside Claude Code on next restart.
 
 **Verification:** After restarting Claude, ask: "Use Figma to get metadata for this file" and provide a Figma file URL. Claude should be able to read the file's structure.
 
 **Common issues:**
-- Token expired — Generate a new personal access token in Figma settings.
-- "Unauthorized" errors — Token may lack the required scopes. Regenerate with full read access.
+- Authentication needed — Run `/mcp` inside Claude Code and follow the Figma auth flow.
 - Not configured — This is optional. Skip if the user does not use Figma.
+
+---
+
+## Playwright
+
+**Type:** Marketplace plugin (from official Anthropic marketplace)
+
+**Install:** User types this directly in Claude Code:
+```
+/plugin install playwright@claude-plugins-official
+```
+When prompted for scope, choose "Install for you (user scope)".
+
+**What it enables:** Browser automation. Claude can navigate to URLs, take screenshots, click elements, fill forms, and inspect pages. Useful for testing web apps, debugging UI issues, and visual verification.
+
+**Post-install:** Download browser binaries (this can take a few minutes):
+```bash
+npx playwright install
+```
+
+**Verification:** After restarting Claude, ask: "Use Playwright to navigate to https://example.com and take a screenshot."
+
+**Common issues:**
+- Browser not installed — Run `npx playwright install` to download browser binaries.
+- Plugin installed but tools not available — Restart the Claude Code session.
 
 ---
 
 ## frontend-design
 
-**Type:** Marketplace plugin
+**Type:** Marketplace plugin (from official Anthropic marketplace)
 
-**Install command (user types this directly in Claude Code):**
+**Install:** User types this directly in Claude Code:
 ```
 /plugin install frontend-design@claude-plugins-official
 ```
 When prompted for scope, choose "Install for you (user scope)".
 
-**Important:** This is a slash command the user must type directly. It cannot be run via bash.
-
 **What it enables:** UI/UX patterns and best practices. Teaches Claude to build better-looking interfaces with stronger design sensibility.
 
-**Verification:** The plugin loads automatically. No additional configuration needed.
+**Verification:** The plugin loads automatically after restart. No additional configuration needed.
+
+---
+
+## superpowers
+
+**Type:** Marketplace plugin (from official Anthropic marketplace)
+
+**Install:** User types this directly in Claude Code:
+```
+/plugin install superpowers@claude-plugins-official
+```
+When prompted for scope, choose "Install for you (user scope)".
+
+**What it enables:** Enhanced workflow skills including brainstorming, systematic debugging, test-driven development, writing plans, code review, and parallel agent dispatching. Makes Claude more disciplined and methodical.
+
+**Verification:** The plugin loads automatically after restart.
+
+---
+
+## Official Marketplace Setup
+
+The official Anthropic marketplace is NOT pre-configured on all installations. Before installing plugins, the user must add it:
+
+```
+/plugin marketplace add anthropics/claude-plugins-official
+```
+
+This is a one-time step. After the marketplace is added, plugins can be installed from it using `/plugin install <name>@claude-plugins-official`.
+
+**Prerequisites:** Git must be configured to use HTTPS for GitHub (set up during Step 3 of primer-setup):
+```bash
+git config --global url."https://github.com/".insteadOf "git@github.com:"
+```
 
 ---
 
 ## Configuration Notes
 
-**MCP servers vs. plugins:** MCP servers (context7, Figma) are installed using `claude mcp add` which writes to `~/.claude.json`. Plugins (Cloudflare, Playwright, frontend-design) are installed from the official marketplace using `/plugin install <name>@claude-plugins-official` which registers them in settings files. The official marketplace is pre-configured — no need to add it.
+**MCP servers vs. plugins:** MCP servers (context7, Cloudflare, Figma) are installed using `claude mcp add` which writes to `~/.claude.json`. Plugins (Playwright, frontend-design, superpowers) are installed from the official marketplace using `/plugin install <name>@claude-plugins-official`.
 
 **Scope options for MCP servers:**
 - `--scope user` — Available in all projects for this user (recommended for primer setup)
