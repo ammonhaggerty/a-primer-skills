@@ -48,9 +48,25 @@ Suggest a kebab-case name derived from their description (e.g., `daily-checkin`,
 
 Create the project directory at `~/Development/PROJECT_NAME/`.
 
-**Primary path:** Check if the AI Primer starter template exists at `~/Development/ai-coding-primer/starter/`. If it exists, copy its contents into the new project directory.
+**Primary path:** Download the starter template from GitHub directly into the new project directory:
 
-**Fallback path:** If the template directory does not exist, generate the project files from scratch. Create every file listed below.
+```bash
+npx degit ammonhaggerty/ai-coding-primer/starter ~/Development/PROJECT_NAME
+```
+
+This pulls the full starter template — welcome page, AI chat, theme toggle, fonts, and animations — without cloning the entire repository.
+
+After downloading, replace all placeholder values in the template files:
+
+- In `package.json`: change `"name": "starter"` to `"name": "PROJECT_NAME"`
+- In `wrangler.toml`: change `name = "starter"` to `name = "PROJECT_NAME"`, `database_name = "starter-db"` to `database_name = "PROJECT_NAME-db"`, and `bucket_name = "starter-bucket"` to `bucket_name = "PROJECT_NAME-bucket"`
+- In `schema.sql`: replace `starter` and `starter-db` with `PROJECT_NAME` and `PROJECT_NAME-db`
+- In `src/index.ts`: replace `"Your Project"` with `PROJECT_TITLE` and update the description paragraph with `PROJECT_DESCRIPTION`
+- In `src/layout.ts`: replace `"Your Project"` with `PROJECT_TITLE`
+
+Then skip to **Step 4: Configure**.
+
+**Fallback path:** If the download fails (no internet, GitHub unavailable, or `npx` error), generate the project files from scratch using the minimal templates below. The fallback produces a simpler starter without the chat page or design polish, but it is fully functional.
 
 ### `package.json`
 
@@ -273,6 +289,7 @@ PROJECT_DESCRIPTION_FROM_STEP_2
 - **Interactivity:** HTMX + Alpine.js (loaded via CDN, no build step)
 - **Database:** Cloudflare D1 (SQLite)
 - **File Storage:** Cloudflare R2
+- **AI:** Cloudflare Workers AI
 
 ## Commands
 
