@@ -228,7 +228,24 @@ sudo chown -R $(whoami) /usr/local/lib /usr/local/bin
 
 ---
 
-## 11. Uninstalling the AI Primer Skills plugin
+## 11. "MCP server failed" message on startup
+
+**Cause:** One or more MCP servers need to be re-authorized. Services like Cloudflare and Figma use short-lived authorization tokens that expire periodically. When they expire, Claude shows "MCP server failed" at startup. This is normal and easy to fix.
+
+**Fix:**
+
+1. Type `/mcp` and press Enter
+2. You'll see a list of your MCP servers — the ones needing attention will be marked
+3. Select the server that needs re-authorization (e.g., Cloudflare or Figma)
+4. A browser window will open — sign in and approve the connection
+
+**If it doesn't work the first time:** Some services (like Cloudflare) have a separate login and authorization step. If you're not already signed into the service in your browser, the authorization may fail silently. Sign into the service first (e.g., go to dash.cloudflare.com and log in), then try `/mcp` again.
+
+This will happen from time to time — it's not a sign that anything is broken, just that the authorization token expired.
+
+---
+
+## 12. Uninstalling the AI Primer Skills plugin
 
 If you want to remove the a-primer-skills plugin completely, you need to do both steps — uninstall the plugin and remove the marketplace source:
 
