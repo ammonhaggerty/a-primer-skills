@@ -44,11 +44,20 @@ claude mcp add --transport http --scope user cloudflare https://mcp.cloudflare.c
 
 **Prerequisites:** None. Wrangler authentication is not required for this MCP server — it uses its own OAuth flow.
 
+**Authorization permissions:** The first time Claude uses a Cloudflare tool, a browser window opens with an authorization page. The page shows three permission levels:
+
+- **Read Only** (default) — Can only read data. Not sufficient for building projects.
+- **Workers Full Access** — Can create and manage Workers, D1, R2, and other services. **Select this one.**
+- **DNS Full Access** — Can manage DNS records. Not needed for this workflow.
+
+The user **must click "Workers Full Access"** before clicking Allow. If they authorize with Read Only, Claude will not be able to create databases, deploy workers, or manage storage. To re-authorize with different permissions, the user can revoke access at dash.cloudflare.com under API Tokens and trigger the OAuth flow again.
+
 **Verification:** After restarting Claude, ask: "Use the Cloudflare tools to search for Workers documentation." Claude should be able to access Cloudflare's API.
 
 **Common issues:**
 - OAuth prompt not appearing — Restart Claude Code and try again.
 - Account selection — If multiple Cloudflare accounts exist, you may need to re-authorize with the correct account.
+- Authorized with Read Only — Claude will get permission errors when creating resources. Revoke the token at dash.cloudflare.com and re-authorize with Workers Full Access.
 
 ---
 

@@ -136,7 +136,7 @@ Install MCP servers using `claude mcp add` CLI commands. These write to `~/.clau
 
 - **context7** — "This lets me pull the latest documentation for any library instead of relying on potentially outdated training data." Run: `claude mcp add --scope user context7 -- npx -y @upstash/context7-mcp@latest`
 
-- **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly." Run: `claude mcp add --transport http --scope user cloudflare https://mcp.cloudflare.com/mcp`. Authentication happens automatically via OAuth the first time it is used — no separate login needed.
+- **Cloudflare** — "This lets me search Cloudflare docs and help manage your cloud services directly." Run: `claude mcp add --transport http --scope user cloudflare https://mcp.cloudflare.com/mcp`. Authentication happens automatically via OAuth the first time it is used — no separate login needed. **Important:** When the OAuth authorization page appears in the browser, it shows three permission levels: Read Only (default), Workers Full Access, and DNS Full Access. Tell the user: "When the Cloudflare authorization page opens, **click 'Workers Full Access'** before clicking Allow. The default is Read Only, which won't let me create or manage your projects."
 
 **Optional:**
 
