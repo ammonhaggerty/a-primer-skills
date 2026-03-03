@@ -228,6 +228,19 @@ sudo chown -R $(whoami) /usr/local/lib /usr/local/bin
 
 ---
 
+## 11. Uninstalling the AI Primer Skills plugin
+
+If you want to remove the a-primer-skills plugin completely, you need to do both steps — uninstall the plugin and remove the marketplace source:
+
+```
+/plugin uninstall a-primer-skills@a-primer
+/plugin marketplace remove ammonhaggerty/a-primer-skills
+```
+
+The first command removes the plugin itself. The second removes the marketplace entry so it no longer appears in your plugin list. If you only do the first step, the marketplace reference remains and Claude may still reference the plugin.
+
+---
+
 ## General Debugging Tips
 
 - **Restart the terminal** after modifying shell profiles (`.zshrc`, `.bashrc`). Many "command not found" issues resolve with a fresh shell session.
