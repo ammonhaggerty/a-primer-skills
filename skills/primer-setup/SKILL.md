@@ -82,7 +82,7 @@ This step is diagnostic only. Make no changes yet. Let the user absorb the pictu
 
 ### Step 3: Account Verification
 
-The guidebook directs users to create Cloudflare and GitHub accounts before running this skill. This step verifies they exist.
+The guidebook directs users to create three accounts before running this skill: Claude, Cloudflare, and GitHub. Since the user is already running Claude Code, their Claude account is working. This step verifies the other two.
 
 At this stage, `wrangler` and `gh` are likely not installed yet, so tool-based checks may not be available. Simply ask:
 
