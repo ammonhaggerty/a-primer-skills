@@ -80,38 +80,22 @@ Here is what I found on your system:
 
 This step is diagnostic only. Make no changes yet. Let the user absorb the picture before proceeding.
 
-### Step 3: Account Setup
+### Step 3: Account Verification
 
-Two free accounts are needed before we install tools. Both take about two minutes to create. These are prerequisites — everything downstream depends on them.
+The guidebook directs users to create Cloudflare and GitHub accounts before running this skill. This step verifies they exist.
 
-**Check for existing accounts first:**
+At this stage, `wrangler` and `gh` are likely not installed yet, so tool-based checks may not be available. Simply ask:
 
-- Run `wrangler whoami` (if wrangler is installed) to check Cloudflare
-- Run `gh auth status` (if gh is installed) to check GitHub
+"The primer asks you to create Cloudflare and GitHub accounts before this step. Do you have both set up?"
 
-Skip any account that is already connected.
+If yes, confirm and move on. The accounts will be connected to the terminal in Step 5, after the necessary tools are installed.
 
-**Cloudflare account:**
+If no, pause and walk them through creating the missing account(s):
 
-If not already authenticated, ask:
+- **Cloudflare:** "Open **https://dash.cloudflare.com/sign-up** — it's free and takes about two minutes. Let me know when you're done."
+- **GitHub:** "Open **https://github.com/signup** — also free, also two minutes. Remember the email you use. Let me know when you're done."
 
-"Before we install the rest of the tools, you'll need two free accounts. First up: Cloudflare — this is where your app will live on the internet. It's free to create and takes about two minutes."
-
-"Open **https://dash.cloudflare.com/sign-up** in your browser, create your account, and let me know when you're done."
-
-Wait for confirmation. Note: we will connect this account to the terminal in a later step — for now, just creating the account is enough.
-
-**GitHub account:**
-
-If not already authenticated, ask:
-
-"Next: GitHub — this backs up your code to the cloud and tracks your project history. Also free, also about two minutes."
-
-"Open **https://github.com/signup** in your browser, create your account, and let me know when you're done. Remember the email you use — we'll connect it to your code in the next step."
-
-Wait for confirmation.
-
-If both accounts already exist, skip this step entirely with: "You're already connected to both Cloudflare and GitHub — moving on."
+Wait for confirmation before proceeding.
 
 ### Step 4: Tool Installation
 
@@ -137,7 +121,7 @@ Work through missing tools one at a time. Skip anything already present and work
   - **Windows:** `winget install --id GitHub.cli`
 - **Wrangler** — "The Cloudflare command-line tool. It deploys your projects to the internet."
 
-**Git configuration:** After confirming Git is installed, check whether `user.name` and `user.email` are configured globally. If either is missing, ask the user for their name and email address. If they created a GitHub account in Step 3, remind them: "Use the same email you used for GitHub — this links your code changes to your GitHub profile." Configure with `git config --global`. Explain: "Git labels every change with your name and email — think of it as signing your work."
+**Git configuration:** After confirming Git is installed, check whether `user.name` and `user.email` are configured globally. If either is missing, ask the user for their name and email address. Remind them: "Use the same email you used for GitHub — this links your code changes to your GitHub profile." Configure with `git config --global`. Explain: "Git labels every change with your name and email — think of it as signing your work."
 
 **Git HTTPS preference:** Also configure Git to use HTTPS instead of SSH for GitHub. This prevents authentication errors when installing plugins and cloning repositories, since most beginners do not have SSH keys set up:
 ```bash
@@ -149,7 +133,7 @@ If any installation fails, consult `references/troubleshooting.md` for the speci
 
 ### Step 5: Account Connections
 
-Connect the accounts created in Step 3 to the terminal tools installed in Step 4. Both connections are required.
+Connect the user's Cloudflare and GitHub accounts to the terminal tools installed in Step 4. Both connections are required.
 
 **GitHub authentication:**
 
@@ -169,9 +153,9 @@ Verify with `gh auth status`. If it shows the user's GitHub username, confirm: "
 
 Check with `wrangler whoami`. If not authenticated:
 
-"Now let's connect Cloudflare. A browser window will open — sign in with the Cloudflare account you just created and click 'Allow'."
+"Now let's connect Cloudflare. A browser window will open — sign in with your Cloudflare account and click 'Allow'."
 
-Important: The `wrangler login` command has a 2-minute timeout. Since the user already created their account in Step 3, this should be quick. If the user did not create an account yet, direct them to dash.cloudflare.com/sign-up first.
+Important: The `wrangler login` command has a built-in timeout. Since the user already has an account, this should be quick. If the user hasn't created an account yet, direct them to dash.cloudflare.com/sign-up first.
 
 Run `wrangler login` with a 3-minute timeout. After the user confirms the OAuth flow is complete, verify with `wrangler whoami`.
 

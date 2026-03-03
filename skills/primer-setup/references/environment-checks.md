@@ -158,42 +158,37 @@ npm --version
 
 ---
 
-## MCP Configuration Location
+## MCP Server Configuration
 
-**Config file path:**
-```
-~/.claude/settings.json
-```
+MCP servers are managed using CLI commands, not by editing config files directly. The configuration is stored in `~/.claude.json`.
 
-This is where MCP server configurations (like context7) are stored under the `mcpServers` key.
-
-**Check if the directory exists:**
+**List configured MCP servers:**
 ```bash
-ls -la ~/.claude/
+claude mcp list
 ```
 
-**Check current MCP config:**
+**Successful result:** Lists all configured MCP servers with their scope and transport type.
+
+**Get details for a specific server:**
 ```bash
-cat ~/.claude/settings.json
+claude mcp get <name>
 ```
-
-**Successful result:** A valid JSON file. If `mcpServers` key exists, it contains configured MCP servers. The file may not exist yet if Claude Code was just installed.
 
 **Common failure causes:**
-- Directory does not exist — Claude Code may not have been run yet. Run `claude` once to initialize.
-- File contains invalid JSON — Usually from manual editing. Validate with a JSON linter or look for trailing commas, missing quotes.
+- No servers listed — None configured yet. Install with `claude mcp add --scope user <name> ...`.
+- Server listed but not responding — Restart Claude Code for changes to take effect. If the server requires authentication (Cloudflare, Figma), run `/mcp` inside Claude Code to re-authorize.
 
 ---
 
 ## Installed Plugins
 
-**Check installed plugins:**
-```bash
-claude /plugin list
+**Check installed plugins (type inside Claude Code):**
+```
+/plugin list
 ```
 
-**Successful result:** Lists all installed plugins, including marketplace plugins like `anthropic/cloudflare` and `anthropic/playwright`.
+**Successful result:** Lists all installed plugins, including marketplace plugins like `playwright@claude-plugins-official`, `frontend-design@claude-plugins-official`, and `superpowers@claude-plugins-official`.
 
 **Common failure causes:**
-- Plugin not listed — Not yet installed. Install marketplace plugins with `claude /plugin marketplace add <name>`.
-- Plugin listed but not working — May need re-authentication or reinstallation. Remove with `claude /plugin remove <name>` and reinstall.
+- Plugin not listed — Not yet installed. Add the marketplace first (`/plugin marketplace add anthropics/claude-plugins-official`), then install with `/plugin install <name>@claude-plugins-official`.
+- Plugin listed but not working — Restart Claude Code. If still not working, uninstall and reinstall.

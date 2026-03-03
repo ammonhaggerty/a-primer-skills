@@ -90,22 +90,28 @@ Successful output shows the account name and account ID.
 
 ## 5. MCP server not responding
 
-**Cause:** Usually a JSON syntax error in `~/.claude/settings.json`. JSON does not allow trailing commas, single quotes, or comments.
+**Cause:** The server may need re-authorization, or the configuration may be invalid.
 
 **Fix:**
 
-Open the config file and validate the JSON:
+First, check if the server needs re-authorization:
+1. Type `/mcp` inside Claude Code
+2. Select the server that needs attention
+3. Follow the browser prompts to re-authorize
+
+If re-authorization doesn't help, check the configuration:
 ```bash
-cat ~/.claude/settings.json | python3 -m json.tool
+claude mcp list
+claude mcp get <server-name>
 ```
 
-If python3 reports an error, it will indicate the line number. Common mistakes:
-- Trailing comma after the last item in an object or array
-- Missing closing brace or bracket
-- Single quotes instead of double quotes
-- Unescaped special characters in strings
+If the server is misconfigured, remove and re-add it:
+```bash
+claude mcp remove <server-name>
+claude mcp add --scope user <server-name> -- <command>
+```
 
-After fixing the JSON, restart the Claude Code session.
+After any changes, restart the Claude Code session.
 
 ---
 
