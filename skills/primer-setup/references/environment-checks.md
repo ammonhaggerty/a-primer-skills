@@ -78,6 +78,28 @@ git config --global user.email
 
 ---
 
+## GitHub CLI
+
+**Command:**
+```bash
+gh --version
+```
+
+**Successful result:** `gh version 2.x.x` (e.g., `gh version 2.49.0`)
+
+**Check authentication:**
+```bash
+gh auth status
+```
+
+**Successful result:** Shows "Logged in to github.com account [username]".
+
+**Common failure causes:**
+- `command not found: gh` — Not installed. Install with `brew install gh` (Mac), `winget install --id GitHub.cli` (Windows), or see https://github.com/cli/cli/blob/trunk/docs/install_linux.md (Linux).
+- "You are not logged in" from `gh auth status` — Run `gh auth login` to authenticate via browser.
+
+---
+
 ## Wrangler (Cloudflare CLI)
 
 **Command:**

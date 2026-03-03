@@ -568,34 +568,21 @@ git commit -m "Initial scaffold from AI Primer starter template"
 
 Your project is now tracked by Git locally. Every change from here on can be saved and undone.
 
-### Create GitHub repository (optional)
+### Create GitHub repository
 
-GitHub backs up your project to the cloud and makes it easy to share. If the user does not have a GitHub account or is not sure, skip this step — everything works without it. They can set up GitHub later whenever they are ready.
-
-Ask: "Do you have a GitHub account? If not, no problem — we'll skip this step and you can set it up later."
-
-**If yes:**
+If the user ran primer-setup, GitHub CLI (`gh`) is already installed and authenticated. Create a private repository and push:
 
 ```bash
 gh repo create PROJECT_NAME --private --source=. --push
 ```
 
-If the `gh` command is not installed:
+If `gh` is not installed or not authenticated (user skipped primer-setup), walk through the setup:
 
-1. Offer to install it:
-   - **Mac:** `brew install gh`
-   - **Linux:** Follow the instructions at https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-   - **Windows:** `winget install --id GitHub.cli`
-2. After installing, authenticate with `gh auth login` and follow the prompts.
-3. Retry the `gh repo create` command.
+1. Install `gh`: **Mac:** `brew install gh` / **Linux:** see https://github.com/cli/cli/blob/trunk/docs/install_linux.md / **Windows:** `winget install --id GitHub.cli`
+2. Authenticate: `gh auth login` — select GitHub.com, HTTPS, and login via browser
+3. Retry: `gh repo create PROJECT_NAME --private --source=. --push`
 
-If SSH keys or GitHub authentication are not configured, walk through the setup:
-
-1. Run `gh auth login`.
-2. Select GitHub.com, SSH protocol, and follow the interactive prompts.
-3. Retry the `gh repo create` command after authentication succeeds.
-
-**If no or unsure:** Skip ahead. Mention: "When you want to back up your project to the cloud, just say 'help me set up GitHub' and I'll walk you through it."
+If the user does not have a GitHub account, offer to skip: "When you want to back up your project, just say 'help me set up GitHub' and I'll walk you through it."
 
 ---
 

@@ -63,6 +63,7 @@ Run detection commands from `references/environment-checks.md` to survey the cur
 - Git — installed and global user.name/user.email configured
 - Homebrew — installed (macOS only)
 - Wrangler — installed
+- GitHub CLI (`gh`) — installed
 
 Present findings in plain English. Use a clear list showing what is ready and what is missing or needs configuration. Example format:
 
@@ -74,11 +75,45 @@ Here is what I found on your system:
   [check] Git 2.43.0 — installed, but name and email not configured
   [x] Homebrew — not found
   [x] Wrangler — not found
+  [x] GitHub CLI — not found
 ```
 
 This step is diagnostic only. Make no changes yet. Let the user absorb the picture before proceeding.
 
-### Step 3: Tool Installation
+### Step 3: Account Setup
+
+Two free accounts are needed before we install tools. Both take about two minutes to create. These are prerequisites — everything downstream depends on them.
+
+**Check for existing accounts first:**
+
+- Run `wrangler whoami` (if wrangler is installed) to check Cloudflare
+- Run `gh auth status` (if gh is installed) to check GitHub
+
+Skip any account that is already connected.
+
+**Cloudflare account:**
+
+If not already authenticated, ask:
+
+"Before we install the rest of the tools, you'll need two free accounts. First up: Cloudflare — this is where your app will live on the internet. It's free to create and takes about two minutes."
+
+"Open **https://dash.cloudflare.com/sign-up** in your browser, create your account, and let me know when you're done."
+
+Wait for confirmation. Note: we will connect this account to the terminal in a later step — for now, just creating the account is enough.
+
+**GitHub account:**
+
+If not already authenticated, ask:
+
+"Next: GitHub — this backs up your code to the cloud and tracks your project history. Also free, also about two minutes."
+
+"Open **https://github.com/signup** in your browser, create your account, and let me know when you're done. Remember the email you use — we'll connect it to your code in the next step."
+
+Wait for confirmation.
+
+If both accounts already exist, skip this step entirely with: "You're already connected to both Cloudflare and GitHub — moving on."
+
+### Step 4: Tool Installation
 
 Work through missing tools one at a time. Skip anything already present and working. For each missing tool, follow this exact sequence:
 
@@ -89,16 +124,20 @@ Work through missing tools one at a time. Skip anything already present and work
 5. Verify installation succeeded by running the check command and confirming the output
 6. Celebrate briefly — "Node.js is installed and ready" — before moving on
 
-**Installation order:** Homebrew first (macOS, if missing), then Node.js, then Git, then Wrangler. This order matters because later tools depend on earlier ones — Wrangler requires npm, which comes with Node.js, which on Mac is easiest to install through Homebrew.
+**Installation order:** Homebrew first (macOS, if missing), then Node.js, then Git, then GitHub CLI, then Wrangler. This order matters because later tools depend on earlier ones — Wrangler requires npm, which comes with Node.js, which on Mac is easiest to install through Homebrew.
 
 **Tool explanations to use:**
 
 - **Homebrew** — "A package manager for Mac. It installs developer tools with a single command instead of downloading installers from websites."
 - **Node.js** — "The engine that runs JavaScript outside a browser. Nearly every web development tool depends on it."
 - **Git** — "Version control. It tracks every change to your code so nothing is ever lost and you can always undo mistakes."
+- **GitHub CLI** — "The command-line tool for GitHub. It lets Claude create repositories, push your code, and manage your projects."
+  - **Mac:** `brew install gh`
+  - **Linux:** Follow the instructions at https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+  - **Windows:** `winget install --id GitHub.cli`
 - **Wrangler** — "The Cloudflare command-line tool. It deploys your projects to the internet."
 
-**Git configuration:** After confirming Git is installed, check whether `user.name` and `user.email` are configured globally. If either is missing, ask the user for their name and email address, then configure Git with `git config --global`. Explain: "Git labels every change with your name and email — think of it as signing your work. No account is needed for this. If you have or plan to create a GitHub account, use the same email here — it links your work to your profile. Not sure? Use whatever email you like. This is easy to change later with one command."
+**Git configuration:** After confirming Git is installed, check whether `user.name` and `user.email` are configured globally. If either is missing, ask the user for their name and email address. If they created a GitHub account in Step 3, remind them: "Use the same email you used for GitHub — this links your code changes to your GitHub profile." Configure with `git config --global`. Explain: "Git labels every change with your name and email — think of it as signing your work."
 
 **Git HTTPS preference:** Also configure Git to use HTTPS instead of SSH for GitHub. This prevents authentication errors when installing plugins and cloning repositories, since most beginners do not have SSH keys set up:
 ```bash
@@ -108,27 +147,37 @@ This is a silent, one-time configuration. No explanation is needed unless the us
 
 If any installation fails, consult `references/troubleshooting.md` for the specific error symptom before attempting alternative approaches.
 
-### Step 4: Cloudflare Account Connection
+### Step 5: Account Connections
 
-Run `wrangler whoami` to check existing authentication.
+Connect the accounts created in Step 3 to the terminal tools installed in Step 4. Both connections are required.
 
-**If already authenticated:** Confirm the account name and skip ahead. "You are already connected to Cloudflare as [account name]."
+**GitHub authentication:**
 
-**If not authenticated:** Ask the user whether they want to connect now or skip for later:
+Check with `gh auth status`. If not authenticated:
 
-"Cloudflare is where your app will live on the internet. You can connect now or skip this and do it later when you're ready to deploy. Everything works locally without it. Would you like to connect now or skip for now?"
+"Now let's connect GitHub to your terminal. I'll start the login process — a browser window will open where you'll sign in to GitHub and authorize the connection."
 
-**If the user wants to skip:** Move on to Step 5. Note: "No problem. When you're ready to connect, just say 'connect to Cloudflare' and I'll walk you through it."
+Run `gh auth login`. Walk the user through the interactive prompts:
+- Select **GitHub.com**
+- Select **HTTPS** as the preferred protocol
+- When asked to authenticate, choose **Login with a web browser**
+- Follow the browser prompts to authorize
 
-**If the user wants to connect now:** Explain that this requires the user to act — Claude cannot log in for them. Important: If the user does not already have a Cloudflare account, tell them to create one first at dash.cloudflare.com/sign-up BEFORE running `wrangler login`. The `wrangler login` command has a 2-minute timeout, which is not enough time to create an account and complete the OAuth flow.
+Verify with `gh auth status`. If it shows the user's GitHub username, confirm: "GitHub is connected as [username]."
 
-Walk through what will happen:
+**Cloudflare authentication:**
 
-"I'll run `wrangler login`. A browser window will open — sign in to your Cloudflare account and click 'Allow' to authorize the connection. Then come back here and let me know when it's done. Note: This has a 2-minute timeout, so complete the browser steps quickly."
+Check with `wrangler whoami`. If not authenticated:
 
-Run `wrangler login` with a 3-minute timeout. After the user confirms the OAuth flow is complete, verify with `wrangler whoami`. If the login timed out, offer to try again. If verification fails, consult `references/troubleshooting.md` for authentication issues.
+"Now let's connect Cloudflare. A browser window will open — sign in with the Cloudflare account you just created and click 'Allow'."
 
-### Step 5: MCP Server Configuration
+Important: The `wrangler login` command has a 2-minute timeout. Since the user already created their account in Step 3, this should be quick. If the user did not create an account yet, direct them to dash.cloudflare.com/sign-up first.
+
+Run `wrangler login` with a 3-minute timeout. After the user confirms the OAuth flow is complete, verify with `wrangler whoami`.
+
+If the login timed out, offer to try again. If verification fails, consult `references/troubleshooting.md` for authentication issues.
+
+### Step 6: MCP Server Configuration
 
 Install MCP servers using `claude mcp add` CLI commands. These write to `~/.claude.json` and persist across all sessions automatically. Consult `references/mcp-server-configs.md` for exact commands.
 
@@ -144,7 +193,7 @@ Install MCP servers using `claude mcp add` CLI commands. These write to `~/.clau
 
 Verify with `claude mcp list` to confirm context7 and cloudflare appear.
 
-### Step 6: Marketplace Plugin Installation
+### Step 7: Marketplace Plugin Installation
 
 Install plugins from the official Anthropic marketplace. The user needs to first add the marketplace, then install plugins from it. These are slash commands the user must type directly — they cannot be run via bash because they have interactive prompts.
 
@@ -179,9 +228,30 @@ After all three are installed, run `npx playwright install` to download browser 
 
 Explain the concept behind plugins and skills: "Skills are playbooks that teach me specific workflows. Without them, I am a generalist. With them, I know your preferred workflow and can be more effective at each part of building — from brainstorming to debugging to deployment."
 
-### Step 7: Completion Summary
+### Step 8: Completion Summary
 
-Present a clear checklist of everything that was set up, using checkmarks for completed items. Include the tool versions where relevant.
+Present a clear checklist of everything that was set up, using checkmarks for completed items. Include the tool versions where relevant. Include account connections:
+
+```
+Accounts:
+  [check] GitHub — connected as [username]
+  [check] Cloudflare — connected as [account name]
+
+Tools:
+  [check] Node.js v22.x
+  [check] Git — configured as [name] <[email]>
+  [check] GitHub CLI
+  [check] Wrangler
+
+MCP Servers:
+  [check] context7
+  [check] Cloudflare
+
+Plugins:
+  [check] Playwright (with browsers)
+  [check] frontend-design
+  [check] superpowers
+```
 
 Tell the user to restart Claude to pick up the new configuration: "To restart, type `/exit` (or press Ctrl+C), then type `claude` to start a fresh session. This is like refreshing a browser — Claude picks up all the new tools and plugins when it starts fresh."
 
@@ -204,8 +274,9 @@ Common categories covered:
 
 - "Command not found" errors after installation
 - Permission errors during global npm installs
-- Wrangler authentication failures
+- Wrangler and GitHub authentication failures
 - MCP server configuration issues
+- MCP server re-authorization (expired tokens)
 - Port conflicts
 
 ---
@@ -214,6 +285,6 @@ Common categories covered:
 
 Three reference files support this skill. Load them as needed during setup.
 
-- `references/environment-checks.md` — Platform-specific commands for detecting installed tools and configurations. Use during Step 2 (detection) and Step 3 (installation verification).
-- `references/mcp-server-configs.md` — Exact configurations and install commands for MCP servers and plugins. Use during Step 5 (MCP setup) and Step 6 (plugin installation).
+- `references/environment-checks.md` — Platform-specific commands for detecting installed tools and configurations. Use during Step 2 (detection) and Step 4 (installation verification).
+- `references/mcp-server-configs.md` — Exact configurations and install commands for MCP servers and plugins. Use during Step 6 (MCP setup) and Step 7 (plugin installation).
 - `references/troubleshooting.md` — Symptom-based troubleshooting for common setup issues. Consult whenever an installation or configuration step fails.
