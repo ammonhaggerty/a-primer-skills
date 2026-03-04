@@ -253,23 +253,35 @@ This will happen from time to time — it's not a sign that anything is broken, 
 
 ## 12. Repeated "permission denied: /var/folders/zz/" errors
 
-**Cause:** On macOS, each user gets a private temp directory at `/var/folders/XX/XXXXX/T/`. When a brand-new user account hasn't been properly initialized (typically because the Mac hasn't been restarted since the account was created), the system falls back to `/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/` — a system-level temp directory that normal users can't write to. This causes cascading permission errors in Claude Code, Wrangler, and other tools.
+**Cause:** On macOS, each user gets a private temp directory at `/var/folders/XX/XXXXX/T/`. When this isn't properly initialized, the system falls back to `/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/` — a system-level temp directory that normal users can't write to. This commonly happens when a user account is created as Standard and later upgraded to Admin. It causes cascading permission errors in Claude Code, Wrangler, and other tools.
 
 **Symptoms:**
 - `zsh:1: permission denied: /var/folders/zz/.../claude-XXXX-cwd` after every command
 - `EACCES: permission denied, mkdir '/var/folders/zz/.../miniflare-...'` when running `wrangler dev`
 - Commands appear to succeed but always show "Error: Exit code 1"
 
-**Fix:** Restart the Mac. This triggers macOS to create the per-user temp directory. After restart, check with:
+**Fix:** First, check what macOS thinks the correct temp directory should be:
+```bash
+getconf DARWIN_USER_TEMP_DIR
+```
+
+If that returns a valid user-specific path (not the `zz` fallback), add it to the shell profile:
+```bash
+echo 'export TMPDIR=$(getconf DARWIN_USER_TEMP_DIR)' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Verify with:
 ```bash
 echo $TMPDIR
 ```
-It should show something like `/var/folders/k5/abc123/T/` (user-specific), not `/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/` (system fallback).
+It should now show a user-specific path like `/var/folders/k5/abc123/T/`.
 
-If the problem persists after restart, log out and back in, or try:
+If `getconf DARWIN_USER_TEMP_DIR` also returns the `zz` fallback, try forcing macOS to create the per-user directory:
 ```bash
 sudo launchctl kickstart -k system/com.apple.dirhelper
 ```
+Then log out and back in. If still broken, restart the Mac.
 
 ---
 

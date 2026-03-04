@@ -41,7 +41,27 @@ Detect the operating system first and tailor every instruction accordingly. Mac-
 
 ## Setup Flow
 
-Work through these steps in order. Each step includes detection logic to skip work that is already done.
+Work through these steps in order. Step 0 must pass before anything else — it catches system-level issues that cause cascading failures if not addressed upfront. Remaining steps include detection logic to skip work that is already done.
+
+### Step 0: System Health Check
+
+Before installing anything, verify the system is ready. Run all checks from `references/system-health-checks.md` and present results as a clear pass/fail list. Example:
+
+```
+System health check:
+
+  [pass] Admin access — your account can install software
+  [pass] Temp directory — writable at /var/folders/k5/.../T/
+  [pass] Home directory — writable
+  [pass] Network — GitHub, npm, and Cloudflare are reachable
+  [pass] Disk space — 45GB free
+  [info] Shell — zsh (profile: ~/.zshrc)
+  [info] macOS 15.3
+```
+
+**If any blocker fails**, stop here. Do not proceed to tool installation — it will fail. Explain the specific issue in plain English, provide the fix from the reference file, and ask the user to resolve it before continuing. The most common blocker is a fresh user account that needs a Mac restart.
+
+**If all blockers pass**, move on. Warnings and informational items can be noted without stopping.
 
 ### Step 1: Workspace Check
 
@@ -273,8 +293,9 @@ Common categories covered:
 
 ## Reference Files
 
-Three reference files support this skill. Load them as needed during setup.
+Four reference files support this skill. Load them as needed during setup.
 
+- `references/system-health-checks.md` — System-level diagnostics that must pass before any installation. Use during Step 0 (health check). Covers admin access, temp directory permissions, write access, network connectivity, disk space, and shell detection.
 - `references/environment-checks.md` — Platform-specific commands for detecting installed tools and configurations. Use during Step 2 (detection) and Step 4 (installation verification).
 - `references/mcp-server-configs.md` — Exact configurations and install commands for MCP servers and plugins. Use during Step 6 (MCP setup) and Step 7 (plugin installation).
 - `references/troubleshooting.md` — Symptom-based troubleshooting for common setup issues. Consult whenever an installation or configuration step fails.
