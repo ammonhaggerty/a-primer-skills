@@ -86,13 +86,14 @@ The guidebook directs users to create three accounts before running this skill: 
 
 At this stage, `wrangler` and `gh` are likely not installed yet, so tool-based checks may not be available. Simply ask:
 
-"The primer asks you to create Cloudflare and GitHub accounts before this step. Do you have both set up?"
+"The primer asks you to create Cloudflare and GitHub accounts before this step. Do you have both set up? And did you enable R2 Object Storage in your Cloudflare dashboard?"
 
-If yes, confirm and move on. The accounts will be connected to the terminal in Step 5, after the necessary tools are installed.
+If yes to all, confirm and move on. The accounts will be connected to the terminal in Step 5, after the necessary tools are installed.
 
 If no, pause and walk them through creating the missing account(s):
 
 - **Cloudflare:** "Open **https://dash.cloudflare.com/sign-up** — it's free and takes about two minutes. Let me know when you're done."
+- **R2 enablement:** "In your Cloudflare dashboard, click **R2 Object Storage** in the left sidebar and follow the activation steps. This requires a credit card on file, but the free tier is generous — 10GB storage at no charge."
 - **GitHub:** "Open **https://github.com/signup** — also free, also two minutes. Remember the email you use. Let me know when you're done."
 
 Wait for confirmation before proceeding.
@@ -123,11 +124,16 @@ Work through missing tools one at a time. Skip anything already present and work
 
 **Git configuration:** After confirming Git is installed, check whether `user.name` and `user.email` are configured globally. If either is missing, ask the user for their name and email address. Remind them: "Use the same email you used for GitHub — this links your code changes to your GitHub profile." Configure with `git config --global`. Explain: "Git labels every change with your name and email — think of it as signing your work."
 
+**Git default branch:** Set the default branch name to `main` (the modern standard). Without this, Git defaults to `master` on fresh installs:
+```bash
+git config --global init.defaultBranch main
+```
+
 **Git HTTPS preference:** Also configure Git to use HTTPS instead of SSH for GitHub. This prevents authentication errors when installing plugins and cloning repositories, since most beginners do not have SSH keys set up:
 ```bash
 git config --global url."https://github.com/".insteadOf "git@github.com:"
 ```
-This is a silent, one-time configuration. No explanation is needed unless the user asks — just run it as part of Git setup.
+Both of these are silent, one-time configurations. No explanation is needed unless the user asks — just run them as part of Git setup.
 
 If any installation fails, consult `references/troubleshooting.md` for the specific error symptom before attempting alternative approaches.
 

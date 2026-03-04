@@ -251,7 +251,29 @@ This will happen from time to time — it's not a sign that anything is broken, 
 
 ---
 
-## 12. Uninstalling the AI Primer Skills plugin
+## 12. Repeated "permission denied: /var/folders/zz/" errors
+
+**Cause:** On macOS, each user gets a private temp directory at `/var/folders/XX/XXXXX/T/`. When a brand-new user account hasn't been properly initialized (typically because the Mac hasn't been restarted since the account was created), the system falls back to `/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/` — a system-level temp directory that normal users can't write to. This causes cascading permission errors in Claude Code, Wrangler, and other tools.
+
+**Symptoms:**
+- `zsh:1: permission denied: /var/folders/zz/.../claude-XXXX-cwd` after every command
+- `EACCES: permission denied, mkdir '/var/folders/zz/.../miniflare-...'` when running `wrangler dev`
+- Commands appear to succeed but always show "Error: Exit code 1"
+
+**Fix:** Restart the Mac. This triggers macOS to create the per-user temp directory. After restart, check with:
+```bash
+echo $TMPDIR
+```
+It should show something like `/var/folders/k5/abc123/T/` (user-specific), not `/var/folders/zz/zyxvpxvq6csfxvn_n0000000000000/T/` (system fallback).
+
+If the problem persists after restart, log out and back in, or try:
+```bash
+sudo launchctl kickstart -k system/com.apple.dirhelper
+```
+
+---
+
+## 13. Uninstalling the AI Primer Skills plugin
 
 If you want to remove the a-primer-skills plugin completely, you need to do both steps — uninstall the plugin and remove the marketplace source:
 

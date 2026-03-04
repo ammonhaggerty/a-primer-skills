@@ -421,7 +421,13 @@ wrangler r2 bucket create PROJECT_NAME-bucket
 
 Update `wrangler.toml` with the actual `database_id` returned from the D1 creation command.
 
-If either command fails due to authentication, run `wrangler login` first and retry. If `wrangler` is not installed, run `npm install -g wrangler` first.
+If D1 creation fails due to authentication, run `wrangler login` first and retry. If `wrangler` is not installed, run `npm install -g wrangler` first.
+
+**If R2 bucket creation fails** with an error like "Please enable R2 through the Cloudflare Dashboard" (error code 10042), R2 hasn't been activated on the account. Tell the user:
+
+"R2 Object Storage needs to be enabled in your Cloudflare dashboard. Go to **dash.cloudflare.com**, click **R2 Object Storage** in the left sidebar, and follow the activation steps. It requires a credit card on file, but the free tier is generous — 10GB storage and 10 million reads per month at no charge. Once it's enabled, let me know and I'll retry."
+
+Wait for confirmation, then retry `wrangler r2 bucket create PROJECT_NAME-bucket`. The project cannot proceed without R2 — it's needed for file storage and deployment.
 
 ### Generate `CLAUDE.md`
 
