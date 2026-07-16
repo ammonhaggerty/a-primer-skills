@@ -77,7 +77,7 @@ npx -y degit ammonhaggerty/ai-coding-primer/starter ~/Development/PROJECT_NAME
 After downloading, replace placeholder values in the template:
 
 - In `package.json`: change `"name": "starter"` to `"name": "PROJECT_NAME"`
-- In `wrangler.toml`: change `name = "starter"` to `name = "PROJECT_NAME"`, `database_name = "starter-db"` to `database_name = "PROJECT_NAME-db"`, `bucket_name = "starter-bucket"` to `bucket_name = "PROJECT_NAME-bucket"`
+- In `wrangler.jsonc`: change `"name": "starter"` to `"name": "PROJECT_NAME"`, `"database_name": "starter-db"` to `"database_name": "PROJECT_NAME-db"`, `"bucket_name": "starter-bucket"` to `"bucket_name": "PROJECT_NAME-bucket"`
 
 **If empty mode**, also strip the sample modules:
 
@@ -116,26 +116,25 @@ Then skip to **Step 5: Configure**.
 }
 ```
 
-### Fallback `wrangler.toml`
+### Fallback `wrangler.jsonc`
 
-```toml
-name = "PROJECT_NAME"
-main = "src/index.ts"
-assets = { directory = "./public" }
-compatibility_date = "2024-12-01"
-compatibility_flags = ["nodejs_compat"]
+Use the current date for `compatibility_date` (the value below is a reasonable floor — bump it to today's date when scaffolding).
 
-[[d1_databases]]
-binding = "DB"
-database_name = "PROJECT_NAME-db"
-database_id = "placeholder-will-be-updated"
-
-[[r2_buckets]]
-binding = "BUCKET"
-bucket_name = "PROJECT_NAME-bucket"
-
-[ai]
-binding = "AI"
+```jsonc
+{
+  "name": "PROJECT_NAME",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-07-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": "./public" },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "PROJECT_NAME-db", "database_id": "placeholder-will-be-updated" }
+  ],
+  "r2_buckets": [
+    { "binding": "BUCKET", "bucket_name": "PROJECT_NAME-bucket" }
+  ],
+  "ai": { "binding": "AI" }
+}
 ```
 
 ### Fallback `src/layout.ts`
@@ -419,7 +418,7 @@ Parse the `database_id` from the output.
 wrangler r2 bucket create PROJECT_NAME-bucket
 ```
 
-Update `wrangler.toml` with the actual `database_id` returned from the D1 creation command.
+Update `wrangler.jsonc` with the actual `database_id` returned from the D1 creation command.
 
 If D1 creation fails due to authentication, run `wrangler login` first and retry. If `wrangler` is not installed, run `npm install -g wrangler` first.
 

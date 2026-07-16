@@ -240,21 +240,25 @@ Explain the concept behind plugins and skills: "Skills are playbooks that teach 
 
 ### Step 8: Model Selection
 
-Claude Code defaults to Sonnet 4.6 on Pro plans. Opus 4.6 is significantly more capable — it reasons more deeply, catches more edge cases, and handles complex multi-file changes with far fewer mistakes. For non-coders especially, this matters: Opus is less likely to produce subtle bugs that you wouldn't know how to catch or fix yourself. The difference is not small.
+Claude Code defaults to Sonnet 5 on Pro plans. Opus 4.8 is significantly more capable — it reasons more deeply, catches more edge cases, and handles complex multi-file changes with far fewer mistakes. For non-coders especially, this matters: Opus is less likely to produce subtle bugs that you wouldn't know how to catch or fix yourself. The difference is not small.
 
 This step requires the user to type a slash command, like the plugin installs.
 
 Tell the user:
 
-"One more important setting. Claude Code may be using Sonnet as its default model, but this guide is built around **Opus 4.6** — it's substantially more capable, especially for people who aren't reviewing every line of code themselves. Opus makes fewer mistakes, handles complexity better, and is less likely to get stuck in loops. I strongly recommend switching to it now."
+"One more important setting. Claude Code may be using Sonnet as its default model, but this guide is built around **Opus 4.8** — it's substantially more capable, especially for people who aren't reviewing every line of code themselves. Opus makes fewer mistakes, handles complexity better, and is less likely to get stuck in loops. I strongly recommend switching to it now."
 
-"Type `/model` and use the arrow keys to select **Opus 4.6**, then press Enter."
+"Type `/model` and use the arrow keys to select **Opus 4.8**, then press Enter."
 
 ```
 /model
 ```
 
-After the user confirms they've selected Opus, acknowledge and move on: "Great — Opus 4.6 is the best model for this workflow. Claude will remember your preference."
+After the user confirms they've selected Opus, acknowledge and move on: "Great — Opus 4.8 is the best model for this workflow. Claude will remember your preference."
+
+Then set the effort level. On the same `/model` screen, effort is adjusted with the left/right arrow keys. Tell the user:
+
+"One quick tuning step: on the `/model` screen, use the left/right arrow keys to set the effort level to **Medium**. Effort controls how hard the model works before answering. Medium is the sweet spot for most building — it's faster and uses fewer tokens than the higher settings, so your plan lasts longer, and Opus at Medium is still very capable. You can bump it up to High later for a genuinely hard problem, then drop back to Medium."
 
 If the user says Opus isn't showing as an option, suggest they check their plan — Opus should be available on both Pro and Max. If they're hitting usage limits frequently, mention that Max ($100/mo) gives more capacity, but Pro is fine for getting started.
 
