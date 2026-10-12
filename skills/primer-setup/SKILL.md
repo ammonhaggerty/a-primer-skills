@@ -238,29 +238,29 @@ After all three are installed, run `npx playwright install` to download browser 
 
 Explain the concept behind plugins and skills: "Skills are playbooks that teach me specific workflows. Without them, I am a generalist. With them, I know your preferred workflow and can be more effective at each part of building — from brainstorming to debugging to deployment."
 
-### Step 8: Model Selection
+### Step 8: Model Check
 
-Claude Code defaults to Sonnet 5 on Pro plans. Opus 4.8 is significantly more capable — it reasons more deeply, catches more edge cases, and handles complex multi-file changes with far fewer mistakes. For non-coders especially, this matters: Opus is less likely to produce subtle bugs that you wouldn't know how to catch or fix yourself. The difference is not small.
+This guide recommends **Sonnet 5.5 at Medium effort** for most coding. It's fast, capable, and easy on usage limits — and it's what Pro plans should default to. Opus 5.5 is the step up: deeper reasoning, fewer mistakes on complex multi-file changes. It's the right choice for genuinely hard problems, and Max users have enough headroom to use it as their everyday model. Defaults can change, so this step is a check, not a switch.
 
 This step requires the user to type a slash command, like the plugin installs.
 
 Tell the user:
 
-"One more important setting. Claude Code may be using Sonnet as its default model, but this guide is built around **Opus 4.8** — it's substantially more capable, especially for people who aren't reviewing every line of code themselves. Opus makes fewer mistakes, handles complexity better, and is less likely to get stuck in loops. I strongly recommend switching to it now."
+"One quick check. This guide recommends **Sonnet 5.5** for most building — it's fast and capable, and it makes your plan last. It should already be your default, but let's confirm."
 
-"Type `/model` and use the arrow keys to select **Opus 4.8**, then press Enter."
+"Type `/model` and check that **Sonnet** is selected. If it isn't, use the arrow keys to select it, then press Enter."
 
 ```
 /model
 ```
 
-After the user confirms they've selected Opus, acknowledge and move on: "Great — Opus 4.8 is the best model for this workflow. Claude will remember your preference."
+Then check the effort level on the same screen (left/right arrow keys). Tell the user:
 
-Then set the effort level. On the same `/model` screen, effort is adjusted with the left/right arrow keys. Tell the user:
+"While you're there, check that the effort level is set to **Medium**. Effort controls how hard the model works before answering. Medium is the sweet spot for most building — it's faster and uses fewer tokens than the higher settings, so your plan lasts longer. You can bump it up to High for a genuinely hard problem, then drop back to Medium."
 
-"One quick tuning step: on the `/model` screen, use the left/right arrow keys to set the effort level to **Medium**. Effort controls how hard the model works before answering. Medium is the sweet spot for most building — it's faster and uses fewer tokens than the higher settings, so your plan lasts longer, and Opus at Medium is still very capable. You can bump it up to High later for a genuinely hard problem, then drop back to Medium."
+After the user confirms, briefly mention Opus: "When you hit something genuinely hard — a stubborn bug, a big restructuring — you can switch to **Opus 5.5** with `/model`. It reasons more deeply but uses your plan faster, so switch back when you're done. If you're on Max, you have room to use Opus as often as you like."
 
-If the user says Opus isn't showing as an option, suggest they check their plan — Opus should be available on both Pro and Max. If they're hitting usage limits frequently, mention that Max ($100/mo) gives more capacity, but Pro is fine for getting started.
+If the user is on Max and prefers to use Opus as their default, that's fine — support it. If they're hitting usage limits frequently on Pro, mention that Max ($100/mo) gives 5× more capacity, but Pro is fine for getting started.
 
 ### Step 9: Completion Summary
 
