@@ -110,8 +110,8 @@ Then skip to **Step 5: Configure**.
     "hono": "^4"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4",
-    "wrangler": "^4"
+    "@cloudflare/workers-types": "^5",
+    "wrangler": "^4.149.0"
   }
 }
 ```
@@ -448,7 +448,7 @@ A personal single-page site with modular cards: profile with weather, social lin
 - **Animations:** GSAP (CDN)
 - **Database:** Cloudflare D1 (SQLite)
 - **File Storage:** Cloudflare R2
-- **AI:** Cloudflare Workers AI (Llama 3.2 3B)
+- **AI:** Cloudflare Workers AI (Llama 4 Scout)
 - **Fonts:** JetBrains Mono (body), Fraunces (headings)
 - **Icons:** Bootstrap Icons, Weather Icons
 - **Theme:** DaisyUI `emerald` (light) / `forest` (dark)
@@ -634,7 +634,7 @@ If `wrangler dev` fails, check common causes:
 > - **Modify any module** — Change the timeline content, swap the Mixcloud embed for your own, update your links
 > - **Remove a module** — If you don't need the timeline or music widget, just say so
 > - **Add a new module** — Ideas: books you're reading (Google Books API for covers), a photo gallery, a blog feed, a contact form
-> - **Upgrade the AI chat** — Right now it uses the free Llama 3.2 model. You can add a Claude API key for a big upgrade, or train it for a completely different purpose
+> - **Upgrade the AI chat** — Right now it uses Llama 4 Scout, which runs on Cloudflare's free AI tier. You can add a Claude API key for a big upgrade, or train it for a completely different purpose
 > - **Change the look** — Swap fonts, try a different DaisyUI theme, adjust the layout
 >
 > What would you like to change first?
